@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MyProject
+Bundle-SymbolicName: MyProject
+Bundle-Version: 1.0.0.qualifier
+Export-Package: mypackage,
+ mypackage.client,
+ mypackage.server,
+ mypackage.shared
+Require-Bundle: org.eclipse.gef;bundle-version="3.7.0",
+ org.eclipse.gef.examples.shapes;bundle-version="3.5.0"
