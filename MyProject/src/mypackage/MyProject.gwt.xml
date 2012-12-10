@@ -20,6 +20,7 @@
   <!-- Other module inherits                                      -->
   <inherits name='org.eclipse.gef.Gef'/>
   <inherits name='org.eclipse.gef.examples.shapes.Shapes'/>
+  <inherits name="com.google.gwt.resources.Resources" />
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='mypackage.client.MyProject'/>
