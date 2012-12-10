@@ -27,22 +27,19 @@ public class MyProject implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		createInstantiators();
-
+		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
-
-		// create tool palette to the left of the shapes editor and connect to
-		// it
+		
+		// create tool palette to the left of the shapes editor and connect to it
 		Composite paletteControl = new Composite(null, SWT.NONE);
-		PaletteRoot palette = PaletteHacks.getPalette();
-		PaletteViewerProvider paletteViewerProvider = new PaletteViewerProvider(
-				editDomain);
-		PaletteViewer paletteViewer = paletteViewerProvider
-				.createPaletteViewer(paletteControl);
+		PaletteRoot palette = MyPaletteFactory.createPalette();
+		PaletteViewerProvider paletteViewerProvider = new PaletteViewerProvider(editDomain);
+		PaletteViewer paletteViewer = paletteViewerProvider.createPaletteViewer(paletteControl);
 		paletteViewer.setContents(palette);
 		paletteControl.setSize(100, 300);
 		Widget paletteParentGwtWidget = paletteControl.getGwtWidget();
 		horizontalPanel.add(paletteParentGwtWidget);
-
+		
 		Composite editorControl = new Composite(null, SWT.NONE);
 		ScrollingGraphicalViewer sgv = new ScrollingGraphicalViewer();
 		sgv.createControl(editorControl);
@@ -52,7 +49,7 @@ public class MyProject implements EntryPoint {
 		editorControl.setSize(700, 300);
 		Widget gwtWidget = editorControl.getGwtWidget();
 		horizontalPanel.add(gwtWidget);
-
+		
 		RootLayoutPanel.get().add(horizontalPanel);
 	}
 
@@ -70,30 +67,24 @@ public class MyProject implements EntryPoint {
 	}
 
 	private void createInstantiators() {
-		ReflectionHelper.registerHelper(
-				org.eclipse.gef.tools.CreationTool.class,
-				new ReflectionHelper.Instantiator() {
-					@Override
-					public Object newInstance(Class c) {
-						return new org.eclipse.gef.tools.CreationTool();
-					}
-				});
-		ReflectionHelper.registerHelper(
-				org.eclipse.gef.examples.shapes.model.EllipticalShape.class,
-				new ReflectionHelper.Instantiator() {
-					@Override
-					public Object newInstance(Class c) {
-						return new org.eclipse.gef.examples.shapes.model.EllipticalShape();
-					}
-				});
-		ReflectionHelper.registerHelper(
-				org.eclipse.gef.examples.shapes.model.RectangularShape.class,
-				new ReflectionHelper.Instantiator() {
-					@Override
-					public Object newInstance(Class c) {
-						return new org.eclipse.gef.examples.shapes.model.RectangularShape();
-					}
-				});
+		ReflectionHelper.registerHelper(org.eclipse.gef.tools.CreationTool.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.tools.CreationTool();
+			}
+		});
+		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.EllipticalShape.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.examples.shapes.model.EllipticalShape();
+			}
+		});
+		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.RectangularShape.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.examples.shapes.model.RectangularShape();
+			}
+		});
 	}
 
 }
