@@ -10,6 +10,9 @@ import org.eclipse.gef.examples.shapes.model.RectangularShape;
 import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 import org.eclipse.gef.examples.shapes.parts.ShapesEditPartFactory;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.tools.ConnectionCreationTool;
+import org.eclipse.gef.tools.MarqueeSelectionTool;
+import org.eclipse.gef.tools.PanningSelectionTool;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -26,7 +29,6 @@ public class MyProject implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		createInstantiators();
 		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		
@@ -64,27 +66,6 @@ public class MyProject implements EntryPoint {
 		diagram.addChild(rs);
 		diagram.addChild(es);
 		return diagram;
-	}
-
-	private void createInstantiators() {
-		ReflectionHelper.registerHelper(org.eclipse.gef.tools.CreationTool.class, new ReflectionHelper.Instantiator() {
-			@Override
-			public Object newInstance(Class c) {
-				return new org.eclipse.gef.tools.CreationTool();
-			}
-		});
-		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.EllipticalShape.class, new ReflectionHelper.Instantiator() {
-			@Override
-			public Object newInstance(Class c) {
-				return new org.eclipse.gef.examples.shapes.model.EllipticalShape();
-			}
-		});
-		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.RectangularShape.class, new ReflectionHelper.Instantiator() {
-			@Override
-			public Object newInstance(Class c) {
-				return new org.eclipse.gef.examples.shapes.model.RectangularShape();
-			}
-		});
 	}
 
 }

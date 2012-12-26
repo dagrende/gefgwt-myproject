@@ -2,7 +2,7 @@ package mypackage.client;
 
 import mypackage.images.MyImages;
 
-import org.eclipse.gef.examples.shapes.ShapesPlugin;
+import org.eclipse.gef.ReflectionHelper;
 import org.eclipse.gef.examples.shapes.model.Connection;
 import org.eclipse.gef.examples.shapes.model.EllipticalShape;
 import org.eclipse.gef.examples.shapes.model.RectangularShape;
@@ -17,9 +17,11 @@ import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.tools.ConnectionCreationTool;
+import org.eclipse.gef.tools.MarqueeSelectionTool;
+import org.eclipse.gef.tools.PanningSelectionTool;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Utility class that can create a GEF Palette.
@@ -64,6 +66,8 @@ final class MyPaletteFactory {
 	 * @return a new PaletteRoot
 	 */
 	static PaletteRoot createPalette() {
+		createInstantiators();
+
 		PaletteRoot palette = new PaletteRoot();
 		palette.add(createToolsGroup(palette));
 		palette.add(createShapesDrawer());
@@ -72,15 +76,21 @@ final class MyPaletteFactory {
 
 	/** Create the "Tools" group. */
 	private static PaletteContainer createToolsGroup(PaletteRoot palette) {
+
 		PaletteToolbar toolbar = new PaletteToolbar("Tools");
 
 		// Add a selection tool to the group
 		ToolEntry tool = new PanningSelectionToolEntry();
+		tool.setSmallIcon(ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.arrow16())));
+		tool.setLargeIcon(ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.arrow24())));
 		toolbar.add(tool);
 		palette.setDefaultEntry(tool);
 
 		// Add a marquee tool to the group
-		toolbar.add(new MarqueeToolEntry());
+		tool = new MarqueeToolEntry();
+		tool.setSmallIcon(ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.marquee_nodes16())));
+		tool.setLargeIcon(ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.marquee_nodes24())));
+		toolbar.add(tool);
 
 		// Add (solid-line) connection tool
 		tool = new ConnectionCreationToolEntry("Solid connection",
@@ -94,10 +104,8 @@ final class MyPaletteFactory {
 					public Object getObjectType() {
 						return Connection.SOLID_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_s16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_s24.gif"));
+				}, ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.connection_s16())),
+				ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.connection_s24())));
 		toolbar.add(tool);
 
 		// Add (dashed-line) connection tool
@@ -112,10 +120,8 @@ final class MyPaletteFactory {
 					public Object getObjectType() {
 						return Connection.DASHED_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_d16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_d24.gif"));
+		}, ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.connection_d16())),
+		ImageDescriptor.createFromImage(new Image(null, MyImages.INSTANCE.connection_d24())));
 		toolbar.add(tool);
 
 		return toolbar;
@@ -124,6 +130,45 @@ final class MyPaletteFactory {
 	/** Utility class. */
 	private MyPaletteFactory() {
 		// Utility class
+	}
+
+	private static void createInstantiators() {
+		ReflectionHelper.registerHelper(org.eclipse.gef.tools.CreationTool.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.tools.CreationTool();
+			}
+		});
+		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.EllipticalShape.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.examples.shapes.model.EllipticalShape();
+			}
+		});
+		ReflectionHelper.registerHelper(org.eclipse.gef.examples.shapes.model.RectangularShape.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new org.eclipse.gef.examples.shapes.model.RectangularShape();
+			}
+		});
+		ReflectionHelper.registerHelper(ConnectionCreationTool.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new ConnectionCreationTool();
+			}
+		});
+		ReflectionHelper.registerHelper(MarqueeSelectionTool.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new MarqueeSelectionTool();
+			}
+		});
+		ReflectionHelper.registerHelper(PanningSelectionTool.class, new ReflectionHelper.Instantiator() {
+			@Override
+			public Object newInstance(Class c) {
+				return new PanningSelectionTool();
+			}
+		});
 	}
 
 }
